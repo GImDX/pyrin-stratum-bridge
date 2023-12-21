@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/kaspanet/kaspad/app/appmessage"
-	"github.com/onemorebsmith/kaspastratum/src/gostratum"
+	"github.com/Pyrinpyi/pyipad/app/appmessage"
+	"github.com/GImDX/pyrin-stratum-bridge/src/gostratum"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
