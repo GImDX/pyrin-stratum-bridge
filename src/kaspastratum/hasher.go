@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
-	"hash"
+	// "hash"
 	"log"
 	"math/big"
 
@@ -57,7 +57,7 @@ func DiffToHash(diff float64) float64 {
 
 func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
 	// hasher, err := blake2b.New(32, []byte("BlockHash"))
-	hasher := blake3.New(32, []byte("BlockHash"))
+	hasher := blake3.New(32, nil)
 	// if err != nil {
 	// 	return nil, err
 	// }
@@ -189,19 +189,19 @@ func BigDiffToLittle(diff *big.Int) float64 {
 	return d
 }
 
-func write16(hasher hash.Hash, val uint16) {
+func write16(hasher *blake3.Hasher, val uint16) {
 	intBuff := make([]byte, 2)
 	binary.LittleEndian.PutUint16(intBuff, val)
 	hasher.Write(intBuff)
 }
 
-func write64(hasher hash.Hash, val uint64) {
+func write64(hasher *blake3.Hasher, val uint64) {
 	intBuff := make([]byte, 8)
 	binary.LittleEndian.PutUint64(intBuff, val)
 	hasher.Write(intBuff)
 }
 
-func writeHexString(hasher hash.Hash, val string) {
+func writeHexString(hasher *blake3.Hasher, val string) {
 	hexBw, _ := hex.DecodeString(val)
 	hasher.Write([]byte(hexBw))
 }
