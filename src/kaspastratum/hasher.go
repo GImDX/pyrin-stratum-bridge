@@ -57,7 +57,9 @@ func DiffToHash(diff float64) float64 {
 
 func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
 	// hasher, err := blake2b.New(32, []byte("BlockHash"))
-	hasher := blake3.New(32, nil)
+	var fixedSizeKey [32]byte
+	copy(fixedSizeKey[:], "BlockHash")
+	hasher := blake3.New(32, fixedSizeKey[:])
 	// if err != nil {
 	// 	return nil, err
 	// }
