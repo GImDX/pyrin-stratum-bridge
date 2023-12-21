@@ -199,9 +199,9 @@ func (sh *shareHandler) HandleSubmit(ctx *gostratum.StratumContext, event gostra
 		powValue := powState.CalculateProofOfWorkValue()
 
 		// share difficulty print for test
-		// log.Println(fmt.Sprintf("(Share Difficulty)   powValue    = %#x", powValue))
-		// log.Println(fmt.Sprintf("(Network Difficulty) Target      = %#x", &powState.Target))
-		// log.Println(fmt.Sprintf("(Job Difficulty)     stratumDiff = %#x", state.stratumDiff.targetValue))
+		// log.Println(fmt.Sprintf("(Share Difficulty)   powValue    = 0x%64x", powValue))
+		// log.Println(fmt.Sprintf("(Network Difficulty) Target      = 0x%64x", &powState.Target))
+		// log.Println(fmt.Sprintf("(Job Difficulty)     stratumDiff = 0x%64x", state.stratumDiff.targetValue))
 
 		// The block hash must be less or equal than the claimed target.
 		if powValue.Cmp(&powState.Target) <= 0 {

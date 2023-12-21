@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+
 	// "hash"
 	"log"
 	"math/big"
@@ -22,7 +23,7 @@ var (
 )
 
 // Basically three different ways of representing difficulty, each used on
-// different occasions.  All 3 are updated when the stratum diff is set via 
+// different occasions.  All 3 are updated when the stratum diff is set via
 // the setDiffValue method
 type kaspaDiff struct {
 	hashValue   float64  // previously known as shareValue
@@ -63,17 +64,31 @@ func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
 	// if err != nil {
 	// 	return nil, err
 	// }
-	write16(hasher, uint16(template.Header.Version))
-	write64(hasher, uint64(len(template.Header.Parents)))
+	if err := write16(hasher, uint16(template.Header.Version)); err != nil {
+		return nil, err
+	}
+	if err := write64(hasher, uint64(len(template.Header.Parents))); err != nil {
+		return nil, err
+	}
 	for _, v := range template.Header.Parents {
-		write64(hasher, uint64(len(v.ParentHashes)))
+		if err := write64(hasher, uint64(len(v.ParentHashes))); err != nil {
+			return nil, err
+		}
 		for _, hash := range v.ParentHashes {
-			writeHexString(hasher, hash)
+			if err := writeHexString(hasher, hash); err != nil {
+				return nil, err
+			}
 		}
 	}
-	writeHexString(hasher, template.Header.HashMerkleRoot)
-	writeHexString(hasher, template.Header.AcceptedIDMerkleRoot)
-	writeHexString(hasher, template.Header.UTXOCommitment)
+	if err := writeHexString(hasher, template.Header.HashMerkleRoot); err != nil {
+		return nil, err
+	}
+	if err := writeHexString(hasher, template.Header.AcceptedIDMerkleRoot); err != nil {
+		return nil, err
+	}
+	if err := writeHexString(hasher, template.Header.UTXOCommitment); err != nil {
+		return nil, err
+	}
 
 	// pack the rest of the header at once
 	data := struct {
@@ -94,7 +109,9 @@ func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
 	if err := binary.Write(detailsBuff, binary.LittleEndian, data); err != nil {
 		return nil, err
 	}
-	hasher.Write(detailsBuff.Bytes())
+	if _, err := hasher.Write(detailsBuff.Bytes()); err != nil {
+		return nil, err
+	}
 
 	bw := template.Header.BlueWork
 	padding := len(bw) + (len(bw) % 2)
@@ -106,9 +123,15 @@ func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
 		}
 	}
 	hh, _ := hex.DecodeString(bw)
-	write64(hasher, uint64(len(hh)))
-	writeHexString(hasher, bw)
-	writeHexString(hasher, template.Header.PruningPoint)
+	if err := write64(hasher, uint64(len(hh))); err != nil {
+		return nil, err
+	}
+	if err := writeHexString(hasher, bw); err != nil {
+		return nil, err
+	}
+	if err := writeHexString(hasher, template.Header.PruningPoint); err != nil {
+		return nil, err
+	}
 
 	final := hasher.Sum(nil)
 	//log.Println(final)
@@ -191,19 +214,22 @@ func BigDiffToLittle(diff *big.Int) float64 {
 	return d
 }
 
-func write16(hasher *blake3.Hasher, val uint16) {
+func write16(hasher *blake3.Hasher, val uint16) error {
 	intBuff := make([]byte, 2)
 	binary.LittleEndian.PutUint16(intBuff, val)
-	hasher.Write(intBuff)
+	_, err := hasher.Write(intBuff)
+	return err
 }
 
-func write64(hasher *blake3.Hasher, val uint64) {
+func write64(hasher *blake3.Hasher, val uint64) error {
 	intBuff := make([]byte, 8)
 	binary.LittleEndian.PutUint64(intBuff, val)
-	hasher.Write(intBuff)
+	_, err := hasher.Write(intBuff)
+	return err
 }
 
-func writeHexString(hasher *blake3.Hasher, val string) {
+func writeHexString(hasher *blake3.Hasher, val string) error {
 	hexBw, _ := hex.DecodeString(val)
-	hasher.Write([]byte(hexBw))
+	_, err := hasher.Write([]byte(hexBw))
+	return err
 }
