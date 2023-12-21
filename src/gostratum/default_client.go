@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kaspanet/kaspad/util"
+	"github.com/Pyrinpyi/pyipad/util"
 	"github.com/mattn/go-colorable"
-	"github.com/onemorebsmith/kaspastratum/src/utils"
+	"github.com/GImDX/pyrin-stratum-bridge/src/utils"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -140,15 +140,15 @@ func SendExtranonce(ctx *StratumContext) {
 	}
 }
 
-var walletRegex = regexp.MustCompile("kaspa:[a-z0-9]+")
+var walletRegex = regexp.MustCompile("pyrin:[a-z0-9]+")
 
 func CleanWallet(in string) (string, error) {
-	_, err := util.DecodeAddress(in, util.Bech32PrefixKaspa)
+	_, err := util.DecodeAddress(in, util.Bech32PrefixPyrin)
 	if err == nil {
 		return in, nil // good to go
 	}
-	if !strings.HasPrefix(in, "kaspa:") {
-		return CleanWallet("kaspa:" + in)
+	if !strings.HasPrefix(in, "pyrin:") {
+		return CleanWallet("pyrin:" + in)
 	}
 
 	// has kaspa: prefix but other weirdness somewhere
