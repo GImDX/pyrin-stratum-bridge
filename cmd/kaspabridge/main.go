@@ -7,7 +7,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/onemorebsmith/kaspastratum/src/kaspastratum"
+	"github.com/GImDX/pyrin-stratum-bridge/src/kaspastratum"
 	"gopkg.in/yaml.v2"
 )
 
