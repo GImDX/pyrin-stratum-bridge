@@ -11,7 +11,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/Pyrinpyi/pyipad/app/appmessage"
-	"github.com/Pyrinpyi/pyipad/difficulty"
+	"github.com/Pyrinpyi/pyipad/util/difficulty"
 )
 
 func TestHeaderSerialization(t *testing.T) {
