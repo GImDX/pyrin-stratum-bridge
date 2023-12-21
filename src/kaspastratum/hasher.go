@@ -9,8 +9,9 @@ import (
 	"log"
 	"math/big"
 
-	"github.com/kaspanet/kaspad/app/appmessage"
-	"golang.org/x/crypto/blake2b"
+	"github.com/Pyrinpyi/pyipad/app/appmessage"
+	// "golang.org/x/crypto/blake2b"
+	"lukechampine.com/blake3"
 )
 
 // static value definitions to avoid overhead in diff translations
@@ -55,10 +56,11 @@ func DiffToHash(diff float64) float64 {
 }
 
 func SerializeBlockHeader(template *appmessage.RPCBlock) ([]byte, error) {
+	// hasher, err := blake2b.New(32, []byte("BlockHash"))
 	hasher, err := blake2b.New(32, []byte("BlockHash"))
-	if err != nil {
-		return nil, err
-	}
+	// if err != nil {
+	// 	return nil, err
+	// }
 	write16(hasher, uint16(template.Header.Version))
 	write64(hasher, uint64(len(template.Header.Parents)))
 	for _, v := range template.Header.Parents {
