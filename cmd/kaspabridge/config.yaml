@@ -1,13 +1,13 @@
 # stratum_listen_port: the port that will be listening for incoming stratum 
 # traffic
 # Note `:PORT` format is needed if not specifiying a specific ip range 
-stratum_port: :5555
+stratum_port: :5554
 
 # kaspad_address: address/port of the rpc server for kaspad, typically 16110
 # For a list of public nodes, run `nslookup mainnet-dnsseed.daglabs-dev.com` 
 # uncomment for to use a public node
 # kaspad_address: 46.17.104.200:16110
-kaspad_address: localhost:16110
+kaspad_address: localhost:13110
 
 # min_share_diff: only accept shares of the specified difficulty (or higher) 
 # from the miner(s).  Higher values will reduce the number of shares submitted, 
@@ -21,7 +21,7 @@ kaspad_address: localhost:16110
 # If you don't want to change the default to match your device(s), the vardiff 
 # engine will adjust to an appropriate diff for lower hashrate devices within a 
 # few minutes.
-min_share_diff: 4096
+min_share_diff: 32
 
 # pow2_clamp: restrict difficulty to 2^n (e.g. 64, 128, 256, etc). This is 
 # required for IceRiver and BitMain ASICs, where difficulties further away from
@@ -35,7 +35,7 @@ pow2_clamp: false
 # every 10s whether each client is maintaining a 20 shares/minute submission 
 # rate, and sends an updated min diff per client if necessary.  Max tolerance 
 # is +/- 5% after 4hrs.
-var_diff: true
+var_diff: false
 
 # shares_per_min: number of shares per minute the vardiff engine should target.
 # Default value is chosen to allow for 99% confidence in measurement accuracy, 
@@ -58,7 +58,7 @@ var_diff_stats: false
 
 # block_wait_time: time to wait since last new block message from kaspad before
 # manually requesting a new block.  Examples are '500ms', '3s', '1m', etc.
-block_wait_time: 3s
+block_wait_time: 500ms
 
 # extranonce_size: size in bytes of extranonce, from 0 (no extranonce) to 3. 
 # With no extranonce (0), all clients will search through the same nonce-space,
@@ -68,7 +68,7 @@ block_wait_time: 3s
 # overall nonce-space (though with 1s block times, this shouldn't really
 # be a concern). 
 # 1 byte = 256 clients, 2 bytes = 65536, 3 bytes = 16777216.
-extranonce_size: 0
+extranonce_size: 2
 
 # print_stats: if true will print stats to the console, false just workers
 # joining/disconnecting, blocks found, and errors will be printed
@@ -82,6 +82,6 @@ log_to_file: true
 # you can get the raw metrics (along with default golang metrics) using
 # `curl http://localhost:{prom_port}/metrics`
 # Note `:PORT` format is needed if not specifiying a specific ip range 
-prom_port: :2114
+prom_port: :2113
 
 
